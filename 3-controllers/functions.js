@@ -343,7 +343,7 @@ async function 註冊會員() {
     // 寫入會員到 Direbase     
     var res = await callAPI(paramToSend, '寫入資料');
 
-    if (res == "API:01 會員寫入成功") {
+    if (res == "API:01 會員寫入成功" || res == "API:01 會員已存在") {
       alert("資料新增成功，前往團課")
       // 顯示團課表格
       console.log("前往團課");
