@@ -223,6 +223,7 @@ function 更新資料() {
   if (!已經是會員) {
     loadCourses = true;
     getCourseData(navDataSource);
+    getCourseHistory(courseHistorySource);      
   }
   
   app.navigate('#:back');
@@ -236,7 +237,7 @@ function callAPI(param, loadingMessage) {
 
     request.onload = function() {
       $.loading.end();
-      console.log(this.response);
+      //console.log(this.response);
 
       resolve(this.response);
     }
@@ -267,7 +268,7 @@ async function checkUserIdExist() {
     已經是會員 = true;
     
     var userProfile = JSON.parse(res);
-    console.log(userProfile);
+    //console.log(userProfile);
 
     $("#formUserName").val(userProfile[0]);
     $("#formUserGender").val(userProfile[1]);     
@@ -284,6 +285,7 @@ async function checkUserIdExist() {
     
     loadCourses = true;
     getCourseData(navDataSource);
+    getCourseHistory(courseHistorySource);    
   }
 }
 
@@ -409,4 +411,16 @@ function checkInputParam() {
     return false;
   }
     return true;
+}
+
+function 切換課程()
+{
+  console.log("切換課程", this.selectedIndex);
+  if(this.selectedIndex==0){
+    $("#已報名課程Div").show();
+    $("#參加過課程Div").hide();
+  } else {
+    $("#已報名課程Div").hide();
+    $("#參加過課程Div").show();    
+  }
 }
