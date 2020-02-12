@@ -99,33 +99,68 @@
       </div>
     </header>
 
-    <div style="height: 15px"></div>
+    <ul data-role="listview" data-type="group" style="margin-top: -25px" >
+      <li >
+        <ul>
+          <li style="padding: 0px; margin-top: -10px" >
+            <ul data-role="buttongroup" data-index="0" data-select="切換課程">
+              <li style="padding:10px" >已報名課程</li>
+              <li>參加過課程</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+       
+    <div id="已報名課程Div">       
+      <div style="height: 15px"></div>
+      <span class="報名課程title">報名新課程</span>
+      <a class="reply km-primary km-button-right" href="#2-views/團課日程.html" style="color: white; margin-right: 10px; " data-role="button" onclick="">查看日曆</a>
+      <div style="height: 20px"></div>
 
-    <span class="報名課程title">報名課程</span>
-    <a class="reply km-primary km-button-right" href="#2-views/團課日程.html" style="color: white; margin-right: 10px; " data-role="button" onclick="">查看日曆</a>
+      <hr>
 
-    <div style="height: 20px"></div>
+      <div style="height: 15px"></div>
+      <span class="報名課程title">已報名課程</span>
+      <div style="height: 15px"></div>
 
-    <hr>
+      <ul data-role="listview" data-source="navDataSource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu">
 
-    <div style="height: 15px"></div>
-    <span class="報名課程title">已報名課程</span>
-    <div style="height: 15px"></div>
+        <script type="text/x-kendo-template" id="header-template">
+          <span class="km-icon km-#: value #"></span> #: value #
+          </script>
 
-    <ul data-role="listview" data-source="navDataSource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu">
-
-      <script type="text/x-kendo-template" id="header-template">
-        <span class="km-icon km-#: value #"></span> #: value #
+        <script type="text/x-kendo-template" id="nav-template">
+          <a href="#: url #" class="課程名稱">#: 課程名稱 # <br>
+            <span style="font-size:16px; color: gray">#: 老師姓名 # </span>
+            <span style="font-size:16px; color: gray; float:right; margin-right:20px" >#: 課程時間 #</span>
+          </a>
         </script>
 
-      <script type="text/x-kendo-template" id="nav-template">
-        <a href="#: url #" class="課程名稱">#: 課程名稱 # <br>
-          <span style="font-size:16px; color: gray">#: 老師姓名 # </span>
-          <span style="font-size:16px; color: gray; float:right; margin-right:20px" >#: 課程時間 #</span>
-        </a>
-      </script>
+      </ul>
+    </div>
 
-    </ul>
+     <div id="參加過課程Div">
+      <div style="height: 15px"></div>
+      <span class="報名課程title">參加過課程</span>
+      <div style="height: 15px"></div>
+
+      <ul data-role="listview" data-source="courseHistorySource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu">
+
+        <script type="text/x-kendo-template" id="header-template">
+          <span class="km-icon km-#: value #"></span> #: value #
+          </script>
+
+        <script type="text/x-kendo-template" id="nav-template">
+          <a href="#: url #" class="課程名稱">#: 課程名稱 # <br>
+            <span style="font-size:16px; color: gray">#: 老師姓名 # </span>
+            <span style="font-size:16px; color: gray; float:right; margin-right:20px" >#: 課程時間 #</span>
+          </a>
+        </script>
+
+      </ul>
+    </div>        
+    
     <h2 id="deleteMe"></h2>
 
   </div>
@@ -255,6 +290,7 @@
     myHistory=[];      
     
     loadCourses = false; //declared in data-process.js
+    $("#參加過課程Div").hide();
     
     // checkInputParam() 和 checkUserIdExist() 都是在 functions.js 定義
     if (checkInputParam()) checkUserIdExist();

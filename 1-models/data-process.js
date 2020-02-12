@@ -60,6 +60,33 @@ navDataSource = new kendo.data.DataSource({
   //group: { field: "section" }
 })
 
+courseHistorySource = new kendo.data.DataSource({
+  transport: {
+    read: function (data) { getCourseHistory(data); }
+  },
+//  sort: {
+//    field: "課程名稱",
+//    dir: "asc"
+//  },
+  requestStart: function () {
+    kendo.ui.progress($("#loading"), true);
+  },
+  requestEnd: function () {
+    kendo.ui.progress($("#loading"), false);
+  },
+
+  schema: {
+    total: function () {
+      console.log("courseHistorySource scheme total");
+      //取得經緯度();    
+      return 77;
+    }
+  },
+  serverPaging: true,
+  pageSize: 40,
+  //group: { field: "section" }
+})
+
 searchDataSource = navDataSource;
 
 function getCourseData(data) {
@@ -100,6 +127,44 @@ function getCourseData(data) {
   }, 100);
 
 }
+
+function getCourseHistory(data) {
+  console.log("getting CourseHistory", loadCourses);
+  
+  if (loadCourses == false) return 1;
+
+  var checkDataReady = setInterval(function(){
+    //console.log("in history", allDataReady);
+    if (allDataReady==4) {
+      clearInterval(checkDataReady);
+      //console.log("in xxx", myHistory)
+      var dataTemp =[];
+      myHistory.forEach(function(course, index, array){
+        courseHistory.forEach(function(item, ind, arr){
+          if (course==item[0]) {
+            //console.log(course, ind);
+            var courseTitle = {
+              "課程名稱": courseData[ind][0] + ": " +
+                         courseData[ind][1],
+              "老師姓名": courseData[ind][2] + " 老師",
+              "課程時間": courseData[ind][3], 
+              "url": "2-views/courseDetail.html?courseId=" + courseData[ind][0],
+              "section": "A"             
+            };
+            dataTemp.push(courseTitle);
+          }
+        });
+      });
+   
+      //console.log(dataTemp);
+      
+      data.success( dataTemp);      
+    }
+    
+  }, 100);
+
+}
+
 
 function nullForNow(e) {
   console.log("nullForNow");
