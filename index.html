@@ -22,8 +22,7 @@
   <script src="https://kendo.cdn.telerik.com/2020.1.114/js/kendo.timezones.min.js"></script>
   
   <link rel="stylesheet" href="css/loading.css" />
-  <script src="js/loading.js"></script>  
-    
+  <script src="js/loading.js"></script>    
 </head>
 
 <body id="body">
@@ -86,10 +85,12 @@
   <div data-role="view" data-title="我的團課" style="font-family: 'Noto Sans TC'" id="courseDiv" data-layout="" data-show="nullForNow" data-init="initSearch">
     <header data-role="header">
       <div data-role="navbar" id="normal" class="km-accent">
-        <!--                <a data-align="left" data-role="button" href="#about" data-rel="drawer" data-icon="drawer-icon"></a>-->
+
+        <a data-align="right" data-role="button" href="#forms" data-rel="" data-icon="contacts"></a>
+        
         <span data-role="view-title"></span>
         <span class="km-view-subtitle"></span>
-        <a data-align="right" data-role="button" data-click="showSearch" data-click-on="down" data-icon="search"></a>
+        <a data-align="left" data-role="button" data-click="showSearch" data-click-on="down" data-icon="search"></a>
       </div>
       <div data-role="navbar" id="search" class="navbar-hidden">
         <div data-align="right" id="demos-search-container" data-align="right">
@@ -129,7 +130,7 @@
 
   </div>
   
-  <div id="forms" data-role="view" data-title="新增資料" data-init="initForm" data-use-native-scrolling="true" style="font-family: 'Noto Sans TC'">
+  <div id="forms" data-role="view" data-title="個人資料" data-init="initForm" data-use-native-scrolling="true" style="font-family: 'Noto Sans TC'">
 <!--
     <header data-role="header">
       <div data-role="navbar" id="normal" class="km-accent">
@@ -198,7 +199,7 @@
       </li>                                                     
     </ul>
     <div align="center">
-      <a data-role="button" class="km-primary" style="color: white; margin:1em; padding-left:3em; padding-right:3em" onclick="送出資料()" >送出資料</a>
+      <a data-role="button" class="km-primary" style="color: white; margin:1em; padding-left:3em; padding-right:3em" onclick="更新資料()" >更新資料</a>
     </div>
     
   </div>  
@@ -246,7 +247,8 @@
     var allDataReady=0;
     var reloadCourseNeeded = false;
     var 要報名的課程;
-    var 要簽到的課程;    
+    var 要簽到的課程;
+    var 已經是會員=false;
       
     notInCourse=[];
     inCourse=[];

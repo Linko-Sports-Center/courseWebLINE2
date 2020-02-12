@@ -214,15 +214,18 @@ function getDataByAPIs(checkDataReady) {
   // =====================================================================================      
 }
 
-function 送出資料() {
-  console.log("送出資料");
+function 更新資料() {
+  console.log("更新資料");
  
-  if (註冊會員()) {
+  註冊會員();
+  console.log(已經是會員);
+
+  if (!已經是會員) {
     loadCourses = true;
     getCourseData(navDataSource);
-
-    app.navigate('#:back');
   }
+  
+  app.navigate('#:back');
 }
 
 // 非同步+await
@@ -248,19 +251,37 @@ async function checkUserIdExist() {
   //Call API:00 檢查 userId 有沒有重複參加 */
 
   $.loading.start('檢查是否已填寫必要資料');
-  paramToSend = "?API=00" + "&UserId=" + userId[1];
+  paramToSend = "?API=14" + "&UserId=" + userId[1];
   var res = await callAPI(paramToSend, '檢查是否已填寫必要資料');
-
   $.loading.end();
-  if (res == "API:00 會員不存在") {
+  
+  if (res.substring(0,6) == "API:14") {
     alert("為了讓您更容易使用團體課程，挑戰賽及使用優惠券，請填寫必要資料");
-
     $("#formUserName").val(decodeURI(displayName[1]));
     $("#formUserName").attr("disabled", "disabled"); 
     $("#LINE頭像").attr("src", pictureUrl[1]);
+    已經是會員 = false;
     app.navigate('#forms');
   } else {
     console.log("前往團課");
+    已經是會員 = true;
+    
+    var userProfile = JSON.parse(res);
+    console.log(userProfile);
+
+    $("#formUserName").val(userProfile[0]);
+    $("#formUserGender").val(userProfile[1]);     
+    $("#formUserBirth").val(userProfile[2]);
+    $("#formUserPhone").val(userProfile[3]);
+    $("#formUserID").val(userProfile[4]);
+    $("#formUserAddr").val(userProfile[5]);
+    $("#formUserHeight").val(userProfile[8]);
+    $("#formUserWeight").val(userProfile[9]);        
+    $("#formEmergencyContact").val(userProfile[10]);
+    $("#formEmergencyPhone").val(userProfile[11]);  
+    
+    $("#LINE頭像").attr("src", userProfile[7]);
+    
     loadCourses = true;
     getCourseData(navDataSource);
   }
@@ -283,7 +304,8 @@ async function 註冊會員() {
     //return false;
   }
 
-  paramToSend = "?API=01" +
+  var APIToCall = (已經是會員)?  "?API=02":"?API=01"
+  paramToSend = APIToCall +
     "&Name="             + $("#formUserName").val() +
     "&Gender="           + $("#formUserGender").val() +     
     "&Birth="            + $("#formUserBirth").val() +
@@ -298,9 +320,9 @@ async function 註冊會員() {
     "&EmergencyPhone="   + $("#formEmergencyPhone").val();       
   
   console.log(paramToSend); 
-  
+
   var profile = "請確認會員資料:\n" +
-    "    會員姓名: " + $("#formUserName").text() + "\n" +
+    "    會員姓名: " + $("#formUserName").val() + "\n" +
     "    會員姓別: " + $("#formUserGender").val() + "\n" +
     "    會員生日: " + $("#formUserBirth").val() + "\n" +          
     "    會員身高: " + $("#formUserHeight").val() + " cm" +"\n" +          
@@ -336,18 +358,19 @@ async function 註冊會員() {
     }
     console.log(JSON.stringify(ftpToWrite));
     requestFTP.send(JSON.stringify(ftpToWrite));
-    //requestFTP.send(); // 預留給 GET 測試       
+      
 
     // end write FTP
 
     // 寫入會員到 Direbase     
     var res = await callAPI(paramToSend, '寫入資料');
 
-    if (res == "API:01 會員寫入成功" || res == "API:01 會員已存在") {
-      alert("資料新增成功，前往團課")
+    if (res == "API:01 會員寫入成功" || res == "API:01 會員已存在" || "API:02 資料更新成功") {
+      alert("資料更新成功，回到團課");
+      loadCourses = false;
       // 顯示團課表格
-      console.log("前往團課");
-      location.reload();
+//      console.log("回到團課");
+//      location.reload();
 //      loadCourses = true;
 //      getCourseData(navDataSource);
 
@@ -357,7 +380,10 @@ async function 註冊會員() {
       $("#errorMessage").css("display", "block");
     }
 
+  } else {
+    console.log("Cancel");
   };
+  
 };
 
 function checkInputParam() {

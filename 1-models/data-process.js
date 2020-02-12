@@ -113,8 +113,12 @@ function removeView(e) {
     reloadCourseNeeded = false;
   }
   if (!e.view.element.data("persist")) {
-    console.log(e);
-    e.view.purge();
+    //console.log(e);
+    
+    // KPC: 找不到 persist 如何設定，只好用粗暴的做法
+    if (e.view.id != "#forms") e.view.purge();
+    
+    //e.view.purge();
   }
 
 }
