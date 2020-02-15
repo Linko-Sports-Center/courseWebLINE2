@@ -124,7 +124,7 @@
       <span class="報名課程title">已報名課程</span>
       <div style="height: 15px"></div>
 
-      <ul data-role="listview" data-source="navDataSource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu">
+      <ul data-role="listview" data-source="courseDataSource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu">
 
         <script type="text/x-kendo-template" id="header-template">
           <span class="km-icon km-#: value #"></span> #: value #
@@ -145,7 +145,7 @@
       <span class="報名課程title">參加過課程</span>
       <div style="height: 15px"></div>
 
-      <ul data-role="listview" data-source="courseHistorySource" data-pull-to-refresh="true" data-template="nav-template" data-header-template="header-template" class="main-menu">
+      <ul data-role="listview" data-source="courseHistorySource" data-pull-to-refresh="false" data-template="nav-template" data-header-template="header-template" class="main-menu">
 
         <script type="text/x-kendo-template" id="header-template">
           <span class="km-icon km-#: value #"></span> #: value #

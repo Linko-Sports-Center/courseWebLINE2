@@ -222,7 +222,7 @@ function 更新資料() {
 
   if (!已經是會員) {
     loadCourses = true;
-    getCourseData(navDataSource);
+    getCourseData(courseDataSource);
     getCourseHistory(courseHistorySource);      
   }
   
@@ -284,7 +284,7 @@ async function checkUserIdExist() {
     $("#LINE頭像").attr("src", userProfile[7]);
     
     loadCourses = true;
-    getCourseData(navDataSource);
+    getCourseData(courseDataSource);
     getCourseHistory(courseHistorySource);    
   }
 }
@@ -374,7 +374,7 @@ async function 註冊會員() {
 //      console.log("回到團課");
 //      location.reload();
 //      loadCourses = true;
-//      getCourseData(navDataSource);
+//      getCourseData(courseDataSource);
 
     } else {
       alert("資料新增失敗，請洽管理員")

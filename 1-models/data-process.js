@@ -2,7 +2,7 @@ var isAndroid = kendo.support.mobileOS.android;
 var loadCourses = false;
 
 // override datasources
-navDataSource = new kendo.data.DataSource({
+courseDataSource = new kendo.data.DataSource({
   // 使用 data 的方法一
   //  data: [
   //      {
@@ -35,7 +35,10 @@ navDataSource = new kendo.data.DataSource({
   
   // 使用 data 的方法二, transport
   transport: {
-    read: function (data) { getCourseData(data); }
+    read: function (data) { 
+      getCourseData(courseDataSource); 
+      getCourseHistory(courseHistorySource);
+    }
   },
 //  sort: {
 //    field: "課程名稱",
@@ -87,7 +90,7 @@ courseHistorySource = new kendo.data.DataSource({
   //group: { field: "section" }
 })
 
-searchDataSource = navDataSource;
+searchDataSource = courseDataSource;
 
 function getCourseData(data) {
   console.log("getting data");
