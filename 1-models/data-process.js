@@ -2,7 +2,7 @@ var isAndroid = kendo.support.mobileOS.android;
 var loadCourses = false;
 
 // override datasources
-courseDataSource = new kendo.data.DataSource({
+navDataSource = new kendo.data.DataSource({
   // 使用 data 的方法一
   //  data: [
   //      {
@@ -35,10 +35,7 @@ courseDataSource = new kendo.data.DataSource({
   
   // 使用 data 的方法二, transport
   transport: {
-    read: function (data) { 
-      getCourseData(courseDataSource); 
-      getCourseHistory(courseHistorySource);
-    }
+    read: function (data) { getCourseData(data); }
   },
 //  sort: {
 //    field: "課程名稱",
@@ -90,7 +87,7 @@ courseHistorySource = new kendo.data.DataSource({
   //group: { field: "section" }
 })
 
-searchDataSource = courseDataSource;
+searchDataSource = navDataSource;
 
 function getCourseData(data) {
   console.log("getting data");
@@ -110,10 +107,10 @@ function getCourseData(data) {
           if (course==item[0]) {
             //console.log(course, ind);
             var courseTitle = {
-              "課程名稱": courseData[ind][0] + ": " +
-                         courseData[ind][1],
-              "老師姓名": courseData[ind][2] + " 老師",
-              "課程時間": courseData[ind][3], 
+              "課程編號": courseData[ind][0],              
+              "課程名稱": courseData[ind][1],
+              "老師時間": courseData[ind][2] + " | " + courseData[ind][3], 
+              "課程費用": courseData[ind][5],              
               "url": "2-views/courseDetail.html?courseId=" + courseData[ind][0],
               "section": "A"             
             };
