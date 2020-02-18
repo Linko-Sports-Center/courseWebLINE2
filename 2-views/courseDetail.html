@@ -152,7 +152,7 @@
         if (useLocalAPIs) {
           request.open('GET', 'http://localhost:5000' + paramToSend, true);
         } else {
-          request.open('GET', 'https://api-linko-sports-center.herokuapp.com/'+paramToSend, true);
+          request.open('GET', apiSite +paramToSend, true);
         }      
 
         request.onload = function() {

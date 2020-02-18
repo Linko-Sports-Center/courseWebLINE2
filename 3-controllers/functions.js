@@ -111,7 +111,7 @@ function getDataByAPIs(checkDataReady) {
   if (useLocalAPIs) {
     request1.open('GET', 'http://localhost:5000' + paramToSend, true);
   } else {
-    request1.open('GET', 'https://api-linko-sports-center.herokuapp.com/'+paramToSend, true);
+    request1.open('GET', apiSite +paramToSend, true);
   }
 
   request1.onload = function() {
@@ -140,7 +140,7 @@ function getDataByAPIs(checkDataReady) {
   if (useLocalAPIs) {
     request2.open('GET', 'http://localhost:5000' + paramToSend, true);
   } else {
-    request2.open('GET', 'https://api-linko-sports-center.herokuapp.com/'+paramToSend, true);
+    request2.open('GET', apiSite +paramToSend, true);
   }
 
   request2.onload = function() {
@@ -167,7 +167,7 @@ function getDataByAPIs(checkDataReady) {
   if (useLocalAPIs) {
     request3.open('GET', 'http://localhost:5000' + paramToSend, true);
   } else {
-    request3.open('GET', 'https://api-linko-sports-center.herokuapp.com/'+paramToSend, true);
+    request3.open('GET', apiSite +paramToSend, true);
   }
 
   request3.onload = function() {
@@ -194,7 +194,7 @@ function getDataByAPIs(checkDataReady) {
   if (useLocalAPIs) {
     request4.open('GET', 'http://localhost:5000' + paramToSend, true);
   } else {
-    request4.open('GET', 'https://api-linko-sports-center.herokuapp.com/'+paramToSend, true);
+    request4.open('GET', apiSite +paramToSend, true);
   }
 
   request4.onload = function() {
@@ -233,7 +233,7 @@ function 更新資料() {
 function callAPI(param, loadingMessage) {
   return new Promise(function(resolve, reject) {       
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api-linko-sports-center.herokuapp.com/'+param, true);
+    request.open('GET', apiSite +param, true);
 
     request.onload = function() {
       $.loading.end();
