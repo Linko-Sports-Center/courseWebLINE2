@@ -98,7 +98,7 @@
             courseDateArr = course[3].split(" ");
             courseTimeStart = courseDateArr[1].substring(0,5);
             courseTimeEnd = courseDateArr[1].substring(courseDateArr[1].length-5,courseDateArr[1].length);            
-            console.log(courseDateArr, courseTimeStart, courseTimeEnd);
+            //console.log(courseDateArr, courseTimeStart, courseTimeEnd);
           }
         });
       }
@@ -178,8 +178,7 @@
       }
       
       function dataAlreadyShown(){
-        console.log("data-view 已顯示", courseId, courseMember); 
-
+        console.log("data-view 已顯示");
         // 查詢是否已繳費
         $("#繳費按鈕"+idNum.toString()).text("請繳費");     
         //$("#繳費按鈕"+idNum.toString()).css("background-color", "grey");  
@@ -189,7 +188,7 @@
         courseMember.forEach(function(course, index, array){
           if (course[0]==courseId) {
             for (var i=1; i< course.length;i++){
-              console.log(course[i][3]);
+              //console.log(course[i][3]);
               if (course[i][3]== userId[1] && course[i][1]=="已繳費") {
                 console.log(course[i][1]);
                 $("#繳費按鈕"+idNum.toString()).text("已繳費");   
