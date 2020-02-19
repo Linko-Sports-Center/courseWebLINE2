@@ -1,5 +1,6 @@
 <!--https://demos.telerik.com/kendo-ui/content/shared/js/mobile-examples.js-->
 <!--?displayName=小華&userId=U722be0c9c9d36e011c0e556bd2047819&pictureUrl=www.google.com-->
+<!--?displayName=小A&userId=U72Abe0c9c9d36e011c0e556bd2047819&pictureUrl=https://media.tractorsupply.com/is/image/TractorSupplyCompany/1305371?$456$-->
     
 <!DOCTYPE html>
 <html>
@@ -97,14 +98,18 @@
         <a data-align="right" data-role="button" href="#forms" data-rel="" data-icon="contacts"></a>
         
         <span data-role="view-title"></span>
-        <span class="km-view-subtitle"></span>
-        <a data-align="left" data-role="button" data-click="showSearch" data-click-on="down" data-icon="search"></a>
+        
+<!--        <span class="km-view-subtitle"></span>-->
+<!--        <a data-align="left" data-role="button" data-click="showSearch" data-click-on="down" data-icon="search"></a>-->
+     
       </div>
+<!--
       <div data-role="navbar" id="search" class="navbar-hidden">
         <div data-align="right" id="demos-search-container" data-align="right">
           <input type="search" id="demos-search" />
         </div>
       </div>
+-->
     </header>
 
     <ul data-role="listview" data-type="group" style="margin-top: -25px" >
@@ -122,10 +127,11 @@
        
     <div id="已報名課程Div">       
       <div style="height: 15px"></div>
-      <span class="報名課程title">報名新課程</span>
-      <a class="reply km-primary km-button-right" href="#2-views/團課日程.html" style="color: white; margin-right: 10px; " data-role="button" onclick="">查看日曆</a>
+<!--      <span class="報名課程title">報名新課程</span>-->
+      <a class="reply km-primary km-button-left" href="#2-views/團課日程.html" style="font-size: 18px; color: white; margin-left: 10px; " data-role="button" onclick="">報名課程</a>
       <div style="height: 20px"></div>
 
+      <br><br>
       <hr>
 
       <div style="height: 15px"></div>
@@ -298,6 +304,7 @@
     var 要報名的課程;
     var 要簽到的課程;
     var 已經是會員=false;
+    var 所有課程展開 = false;
       
     notInCourse=[];
     inCourse=[];
