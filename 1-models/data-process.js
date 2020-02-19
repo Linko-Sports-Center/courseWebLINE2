@@ -1,4 +1,7 @@
 var isAndroid = kendo.support.mobileOS.android;
+
+var apiSite = 'https://api-linko-sports-center.herokuapp.com/';
+
 var loadCourses = false;
 
 // override datasources
@@ -106,11 +109,13 @@ function getCourseData(data) {
         courseData.forEach(function(item, ind, arr){
           if (course==item[0]) {
             //console.log(course, ind);
+            var 課程圖片Url = ( courseData[ind][11] !=undefined)?courseData[ind][11]:"picPlaceholder.png";
             var courseTitle = {
-              "課程名稱": courseData[ind][0] + ": " +
-                         courseData[ind][1],
-              "老師姓名": courseData[ind][2] + " 老師",
-              "課程時間": courseData[ind][3], 
+              "課程編號": courseData[ind][0],              
+              "課程名稱": courseData[ind][1],
+              "老師時間": courseData[ind][2] + " | " + courseData[ind][3], 
+              "課程費用": courseData[ind][5],  
+              "課程圖片": 課程圖片Url,
               "url": "2-views/courseDetail.html?courseId=" + courseData[ind][0],
               "section": "A"             
             };
@@ -140,14 +145,17 @@ function getCourseHistory(data) {
       //console.log("in xxx", myHistory)
       var dataTemp =[];
       myHistory.forEach(function(course, index, array){
+        console.log(course);
         courseHistory.forEach(function(item, ind, arr){
           if (course==item[0]) {
             //console.log(course, ind);
+            var 課程圖片Url = ( item[11] !=undefined )?item[11]:"picPlaceholder.png";            
             var courseTitle = {
-              "課程名稱": courseData[ind][0] + ": " +
-                         courseData[ind][1],
-              "老師姓名": courseData[ind][2] + " 老師",
-              "課程時間": courseData[ind][3], 
+              "課程編號": item[0],              
+              "課程名稱": item[1],
+              "老師時間": item[2] + " | " + item[3], 
+              "課程費用": item[5], 
+              "課程圖片": 課程圖片Url,              
               "url": "2-views/courseDetail.html?courseId=" + courseData[ind][0],
               "section": "A"             
             };
