@@ -1,5 +1,7 @@
 var isAndroid = kendo.support.mobileOS.android;
+
 var apiSite = 'https://api-linko-sports-center.herokuapp.com/';
+
 var loadCourses = false;
 
 // override datasources

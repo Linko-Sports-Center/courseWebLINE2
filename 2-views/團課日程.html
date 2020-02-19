@@ -12,11 +12,15 @@
   
 </head>
 <body>
-  <div data-role="view" data-init="initData" data-title="團課日程" style="text-align: center;font-family: 'Noto Sans TC'">
+  <div data-role="view" data-init="initData"  data-title="團課日程" style="text-align: center;font-family: 'Noto Sans TC'" data-use-native-scrolling="true">
     <div id="團課日程Div">
       <div id="calendar"></div>
       
-      <button class="reply km-primary km-button-left" style="color: white; margin-left: 20px; background-color: teal; border-color:teal" data-role="button" onclick="查看所有課程()" id="查看所有課程按鈕">查看所有課程</button>   
+      <div style="height: 20px"></div>
+      <button class="reply km-primary km-button-left" style="color: white; margin-left: 20px; background-color: teal; border-color:teal" data-role="button" onclick="查看所有課程()" id="查看所有課程按鈕">查看所有課程</button> 
+      
+      <button class="reply km-primary km-button-right" style="color: white; margin-right: 20px; background-color: teal; border-color:teal" data-role="button" onclick="顯示系列課程()" id="顯示系列課程按鈕">顯示系列課程</button> 
+                
       <br><br>   
       <hr>
       <div>
@@ -77,9 +81,12 @@
 
   <script>
     var dataSource;
+    console.log("enter 團課日程.html");
     
+    系列課程展開 = false;
+        
     function initData(e) {
-      console.log("init");
+      console.log("initData");
 
       //initDataSource();
       dataSource = new kendo.data.DataSource({    
@@ -90,8 +97,8 @@
           },            
           serverPaging: true,
           pageSize: 40
-      });      
-
+      });   
+      
       $("#courseTable").kendoMobileListView({
           dataSource: dataSource,
           pullToRefresh: false,            
@@ -102,6 +109,13 @@
           change: onChange,
           navigate: onNavigate
       });
+      
+      // 修正進入團課日程沒顯示當天課程的問題
+      var today = new Date();
+      var todayStr = today.toLocaleDateString();
+      日曆選擇的日期 = todayStr.replace(/\//g,"-");
+      onChange(日曆選擇的日期);
+
     }    
         
     function 報名課程(courseId){
@@ -142,11 +156,36 @@
     }
     
     function emptyDataSource(){
-      var numToDel = dataSource.lastRange().end;
-      for (var i=0; i< numToDel; i++){
-        var toDel = dataSource.at(0);
-        dataSource.remove(toDel);
+      try {
+        var numToDel = dataSource.lastRange().end;
+        for (var i=0; i< numToDel; i++){
+          var toDel = dataSource.at(0);
+          dataSource.remove(toDel);
+        }
+      }catch(e){
+        console.log(e);
       }
+    }
+      
+    function 顯示系列課程() {
+      console.log("顯示系列課程");
+      
+      if (系列課程展開 == true) {
+        
+        系列課程展開 = false;
+        $("#顯示系列課程按鈕").text("顯示系列課程");
+        $("#顯示系列課程按鈕").css("background-color", "teal");
+        $("#顯示系列課程按鈕").css("border-color", "teal");          
+
+      } else {
+        
+        系列課程展開 = true;
+        $("#顯示系列課程按鈕").text("隱藏系列課程"); 
+        $("#顯示系列課程按鈕").css("background-color", "LightSeaGreen");
+        $("#顯示系列課程按鈕").css("border-color", "LightSeaGreen");         
+      }
+      
+      onChange(日曆選擇的日期);
     }
 
     function 查看所有課程(){
@@ -154,9 +193,11 @@
 
       emptyDataSource();
       
-      if (所有課程展開==false){
-        所有課程展開 = true;
-        $("#查看所有課程按鈕").text("收起所有課程")
+      if (所有課程展開==true){
+        所有課程展開 = false;
+        $("#查看所有課程按鈕").text("只看當天課程");
+        $("#查看所有課程按鈕").css("background-color", "LightSeaGreen");
+        $("#查看所有課程按鈕").css("border-color", "LightSeaGreen");         
 
         courseData.forEach(function(course, index, array){
           var 課程圖片Url = (course[11]!=undefined)? course[11]: "picPlaceholder.png";
@@ -195,28 +236,78 @@
           });
         }); 
       } else {
-        所有課程展開 = false;
-        $("#查看所有課程按鈕").text("查看所有課程")        
+        所有課程展開 = true;
+        $("#查看所有課程按鈕").text("查看所有課程");
+        $("#查看所有課程按鈕").css("background-color", "teal");
+        $("#查看所有課程按鈕").css("border-color", "teal");  
+        onChange(日曆選擇的日期);
       }
     }    
   
-    function onChange() {
-      var selectedDateStr = kendo.toString(this.value(), 'd');
-      var selectedDate = convertDate(selectedDateStr);
-      console.log("Change :" + selectedDate);
+    function 找到特訂日期課程(selectedDate){
+      var 特訂日期課程=[];
+
+      courseData.forEach(function(course, index, array){
+            var courseDateArr = course[3].split(" ");
+            var courseDate = courseDateArr[0]; 
+
+            if (courseDate == selectedDate) {
+              特訂日期課程.push([course[0], course[1]]);              
+            }      
+        });
+      return 特訂日期課程;
+    }
+    
+    function 彙整系列課程(特訂日期課程){
+      var groupedCourses=[];
       
-      所有課程展開 = false;
-      $("#查看所有課程按鈕").text("查看所有課程")  
+      特訂日期課程.forEach(function(courseChosen, index, array){
+        var courseNameChosenArray = courseChosen[1].split(" ");
+        //console.log(courseChosen, courseNameChosenArray);        
+        
+        // 尋找同名系列課程
+        courseData.forEach(function(course, courseIndex, courseArray){
+          courseNameArray = course[1].split(" ");    
+          //console.log(courseNameArray[0]);
+          
+          if (courseNameArray[0] == courseNameChosenArray[0]) {
+            groupedCourses.push(course);
+          }
+        });                
+      });
+      return groupedCourses;
+    }
+    
+    function onChange(selectedDate) {
+      //console.log(selectedDate, typeof selectedDate);
+      if ( (typeof selectedDate) == "object") {
+        var selectedDateStr = kendo.toString(this.value(), 'd');
+        var selectedDate = convertDate(selectedDateStr);
+        日曆選擇的日期 = selectedDate;
+        //console.log(selectedDate);
+      }
+      //console.log("Change :" + selectedDate);
+      
+      所有課程展開 = true;
+      $("#查看所有課程按鈕").text("查看所有課程") 
+      $("#查看所有課程按鈕").css("background-color", "teal");
+      $("#查看所有課程按鈕").css("border-color", "teal");        
       
       emptyDataSource();
+      
+      var groupedCourseData= 彙整系列課程(找到特訂日期課程(selectedDate));
+      
+      if (!系列課程展開) {
+        groupedCourseData = courseData;       
+      } 
 
 //XXX      courseData.forEach(function(course, index, array){
-      for (var index=0; index < courseData.length; index++){
-        var course= courseData[index];
+      for (var index=0; index < groupedCourseData.length; index++){
+        var course= groupedCourseData[index];
         var courseDateArr = course[3].split(" ");
         var courseDate = courseDateArr[0]; 
 
-        if (courseDate == selectedDate) {
+        if ( courseDate == selectedDate || 系列課程展開) {
           //console.log("matched ", course);
           var 課程圖片Url = (course[11]!=undefined)? course[11]: "picPlaceholder.png";          
           dataSource.add({  
@@ -289,9 +380,10 @@
           $("#確定報名按鈕").css("border-style", "none");           
           setEnabled($("#確定報名按鈕"), false);
 
-          location.reload();
-          
-          // location.reload() 後就不用再設定 reloadCourseNeeded = true;        
+          //location.reload();
+          reloadCourseNeeded = true;        
+          $("#團課日程Div").show();
+          $("#報名表格").hide()
 
         }
       } 

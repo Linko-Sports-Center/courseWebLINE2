@@ -37,7 +37,7 @@
         id = "簽到按鈕#:ID#"
         data-actionsheet-context="#:ID#">簽到</a>
 
-        <img src="picPlaceholder.png" width="150" height="150" style="float:left;margin-right:10px"/> 
+        <img id="courseDetailPicUrl" src="#: 課程圖片 #" width="150" height="150" style="float:left;margin-right:10px"/> 
         <br><br><br><br><br><br>
         <h4>課程編號: #: 課程編號 #</h4>
         <h4>課程名稱: #: 課程名稱 #</h4>
@@ -91,7 +91,8 @@
               "課程費用": course[5],
               "其他說明": course[10],
               "報名人數": course[7],
-              "繳費人數": course[8],          
+              "繳費人數": course[8],    
+              "課程圖片": course[11],
             };
             courseDetail.push(courseDetailItem);
             
